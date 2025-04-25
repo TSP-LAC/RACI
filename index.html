@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSP SAP Project RACI Matrix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #1a5276;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .raci-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        .raci-table th, .raci-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .raci-table th {
+            background-color: #1a5276;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        .raci-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .raci-table tr:hover {
+            background-color: #e6f7ff;
+        }
+        .R { color: #FF0000; font-weight: bold; }
+        .A { color: #0000FF; font-weight: bold; }
+        .C { color: #008000; font-weight: bold; }
+        .I { color: #FFA500; font-weight: bold; }
+        .legend {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .reset-btn {
+            padding: 8px 16px;
+            background-color: #1a5276;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+        .reset-btn:hover {
+            background-color: #154360;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TSP SAP Project RACI Matrix</h1>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label for="role-filter">Filter by Role:</label>
+                <select id="role-filter">
+                    <option value="all">All Roles</option>
+                    <option value="Project Manager">Project Manager</option>
+                    <option value="Functional Consultant">Functional Consultant</option>
+                    <option value="Technical Consultant">Technical Consultant</option>
+                    <option value="Functional Lead">Functional Lead</option>
+                    <option value="Technical Lead">Technical Lead</option>
+                    <option value="Architect">Architect</option>
+                    <option value="Sponsor">Sponsor</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="activity-filter">Filter by Activity:</label>
+                <select id="activity-filter">
+                    <option value="all">All Activities</option>
+                    <option value="Explorer">Explorer</option>
+                    <option value="Key-User Support">Key-User Support</option>
+                    <option value="Scenario Generation">Scenario Generation</option>
+                    <option value="Bug Fixing">Bug Fixing</option>
+                    <option value="Configuration">Configuration</option>
+                    <option value="Development">Development</option>
+                    <option value="Requirements Definition">Requirements Definition</option>
+                    <option value="Design Review">Design Review</option>
+                    <option value="Quality Assurance">Quality Assurance</option>
+                    <option value="Change Management">Change Management</option>
+                    <option value="Data Migration">Data Migration</option>
+                    <option value="Training">Training</option>
+                    <option value="Go-Live Support">Go-Live Support</option>
+                    <option value="Project Management">Project Management</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="responsibility-filter">Filter by Responsibility:</label>
+                <select id="responsibility-filter">
+                    <option value="all">All</option>
+                    <option value="R">Responsible (R)</option>
+                    <option value="A">Accountable (A)</option>
+                    <option value="C">Consulted (C)</option>
+                    <option value="I">Informed (I)</option>
+                </select>
+            </div>
+            
+            <button class="reset-btn" id="reset-filters">Reset Filters</button>
+        </div>
+        
+        <div class="table-container">
+            <table class="raci-table" id="raci-matrix">
+                <thead>
+                    <tr>
+                        <th>Activity / Role</th>
+                        <th>Project Manager</th>
+                        <th>Functional Consultant</th>
+                        <th>Technical Consultant</th>
+                        <th>Functional Lead</th>
+                        <th>Technical Lead</th>
+                        <th>Architect</th>
+                        <th>Sponsor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Explorer (Solution Discovery)</td>
+                        <td class="A">A</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="I">I</td>
+                    </tr>
+                    <tr>
+                        <td>Key-User Support</td>
+                        <td class="I">I</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="A">A</td>
+                        <td class="I">I</td>
+                        <td class="I">I</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Scenario Generation</td>
+                        <td class="I">I</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="A">A</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bug Fixing</td>
+                        <td class="I">I</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="A">A</td>
+                        <td class="C">C</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Configuration</td>
+                        <td class="I">I</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="A">A</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Development</td>
+                        <td class="I">I</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="A">A</td>
+                        <td class="C">C</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Requirements Definition</td>
+                        <td class="A">A</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="I">I</td>
+                    </tr>
+                    <tr>
+                        <td>Design Review</td>
+                        <td class="A">A</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="R">R</td>
+                        <td class="R">R</td>
+                        <td class="I">I</td>
+                    </tr>
+                    <tr>
+                        <td>Quality Assurance</td>
+                        <td class="A">A</td>
+                        <td class="R">R</td>
+                        <td class="R">R</td>
+                        <td class="R">R</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="I">I</td>
+                    </tr>
+                    <tr>
+                        <td>Change Management</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="I">I</td>
+                        <td class="A">A</td>
+                    </tr>
+                    <tr>
+                        <td>Data Migration</td>
+                        <td class="A">A</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="I">I</td>
+                    </tr>
+                    <tr>
+                        <td>Training</td>
+                        <td class="A">A</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="I">I</td>
+                        <td class="I">I</td>
+                    </tr>
+                    <tr>
+                        <td>Go-Live Support</td>
+                        <td class="A">A</td>
+                        <td class="R">R</td>
+                        <td class="R">R</td>
+                        <td class="R">R</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="I">I</td>
+                    </tr>
+                    <tr>
+                        <td>Project Management</td>
+                        <td class="R">R</td>
+                        <td class="I">I</td>
+                        <td class="I">I</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="A">A</td>
+                    </tr>
+                    <tr>
+                        <td>Status Reporting</td>
+                        <td class="R">R</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="C">C</td>
+                        <td class="A">A</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="legend">
+            <h3>RACI Legend:</h3>
+            <div class="legend-item"><span class="R">R</span> - Responsible: Does the work</div>
+            <div class="legend-item"><span class="A">A</span> - Accountable: Ultimately answerable</div>
+            <div class="legend-item"><span class="C">C</span> - Consulted: Provides input</div>
+            <div class="legend-item"><span class="I">I</span> - Informed: Kept up-to-date</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleFilter = document.getElementById('role-filter');
+            const activityFilter = document.getElementById('activity-filter');
+            const responsibilityFilter = document.getElementById('responsibility-filter');
+            const resetButton = document.getElementById('reset-filters');
+            const table = document.getElementById('raci-matrix');
+            
+            function applyFilters() {
+                const selectedRole = roleFilter.value;
+                const selectedActivity = activityFilter.value;
+                const selectedResponsibility = responsibilityFilter.value;
+                
+                const rows = table.querySelectorAll('tbody tr');
+                
+                rows.forEach(row => {
+                    let showRow = true;
+                    
+                    // Filter by activity
+                    if (selectedActivity !== 'all') {
+                        const activityCell = row.cells[0];
+                        if (!activityCell.textContent.includes(selectedActivity)) {
+                            showRow = false;
+                        }
+                    }
+                    
+                    // Filter by role and responsibility
+                    if (selectedRole !== 'all' || selectedResponsibility !== 'all') {
+                        let roleIndex = -1;
+                        
+                        // Find the column index for the selected role
+                        const headers = table.querySelectorAll('thead th');
+                        headers.forEach((header, index) => {
+                            if (header.textContent === selectedRole) {
+                                roleIndex = index;
+                            }
+                        });
+                        
+                        if (selectedRole !== 'all' && roleIndex !== -1) {
+                            // Check if there's any responsibility for this role
+                            const cellContent = row.cells[roleIndex].textContent.trim();
+                            
+                            if (selectedResponsibility !== 'all') {
+                                // Also filter by specific responsibility
+                                if (cellContent !== selectedResponsibility) {
+                                    showRow = false;
+                                }
+                            } else {
+                                // Just check if the role has any responsibility
+                                if (cellContent === '') {
+                                    showRow = false;
+                                }
+                            }
+                        } else if (selectedResponsibility !== 'all') {
+                            // Filter by responsibility across all roles
+                            let hasResponsibility = false;
+                            
+                            // Start from 1 to skip the activity name cell
+                            for (let i = 1; i < row.cells.length; i++) {
+                                if (row.cells[i].textContent.trim() === selectedResponsibility) {
+                                    hasResponsibility = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (!hasResponsibility) {
+                                showRow = false;
+                            }
+                        }
+                    }
+                    
+                    row.style.display = showRow ? '' : 'none';
+                });
+            }
+            
+            roleFilter.addEventListener('change', applyFilters);
+            activityFilter.addEventListener('change', applyFilters);
+            responsibilityFilter.addEventListener('change', applyFilters);
+            
+            resetButton.addEventListener('click', function() {
+                roleFilter.value = 'all';
+                activityFilter.value = 'all';
+                responsibilityFilter.value = 'all';
+                applyFilters();
+            });
+        });
+    </script>
+</body>
+</html>
